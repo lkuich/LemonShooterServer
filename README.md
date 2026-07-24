@@ -20,15 +20,17 @@ for checksums, compatibility details, and the ad-hoc-signed macOS build notice.
 
 ## Run a release
 
-Keep the executable, `.pck`, and `server.cfg` together. Then run:
+Extract the Linux or macOS archive and run:
 
 ```sh
-./LemonShooterServer.x86_64 --server-config server.cfg
+./run-server.sh
 ```
 
-On Windows use `LemonShooterServer.exe`; on macOS use
-`LemonShooter.app/Contents/MacOS/LemonShooter`. Forward UDP 7000 by default.
-See [server/README.md](server/README.md) for configuration and hosting details.
+The launcher selects the correct binary, loads the adjacent `server.cfg`, and
+forwards options such as `--port 7100` or `--private`. On Windows use
+`LemonShooterServer.exe --server-config server.cfg`. Forward UDP 7000 by
+default. See [server/README.md](server/README.md) for configuration and hosting
+details.
 
 ## Build locally
 

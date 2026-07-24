@@ -16,23 +16,27 @@ Release notes and asset checksums are on the
 
 ## Quick start
 
-Keep the executable, `.pck`, and `server.cfg` in the same directory, then run:
+Extract the archive and run the launcher from its root:
 
 ```sh
-./LemonShooterServer.x86_64 --server-config server.cfg
+./run-server.sh
 ```
 
-On Windows:
-
-```powershell
-.\LemonShooterServer.exe --server-config server.cfg
-```
-
-On macOS:
+It selects the macOS or Linux binary, loads the adjacent `server.cfg`, and
+forwards extra arguments:
 
 ```sh
-./LemonShooter.app/Contents/MacOS/LemonShooter --server-config server.cfg
+./run-server.sh --port 7100 --private
 ```
+
+To use another configuration, pass it explicitly:
+
+```sh
+./run-server.sh --server-config /path/to/community-server.cfg
+```
+
+Windows operators should run
+`.\LemonShooterServer.exe --server-config server.cfg` from PowerShell.
 
 The macOS archive is universal and runs natively on Apple Silicon and Intel
 Macs. Prerelease builds are ad-hoc signed but not notarized, so first launch may

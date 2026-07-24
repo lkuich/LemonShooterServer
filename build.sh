@@ -141,16 +141,29 @@ package_server() {
   local executable="$2"
   local package="$3"
   local archive="$4"
+  local include_shell_launcher="${5:-false}"
+  local -a archive_files
 
   [[ -s "$executable" ]] || die "Missing server executable: $executable"
   [[ -s "$package" ]] || die "Missing server data package: $package"
   cp "$ROOT_DIR/server/server.cfg" "$directory/server.cfg"
   cp "$ROOT_DIR/server/README.md" "$directory/HOSTING.md"
   cp "$ROOT_DIR/LICENSE" "$directory/LICENSE"
+  archive_files=(
+    "$(basename "$executable")"
+    "$(basename "$package")"
+    server.cfg
+    HOSTING.md
+    LICENSE
+  )
+  if [[ "$include_shell_launcher" == true ]]; then
+    cp "$ROOT_DIR/server/run-server.sh" "$directory/run-server.sh"
+    chmod +x "$directory/run-server.sh"
+    archive_files+=(run-server.sh)
+  fi
   (
     cd "$directory"
-    zip -q -9 "$(basename "$archive")" \
-      "$(basename "$executable")" "$(basename "$package")" server.cfg HOSTING.md LICENSE
+    zip -q -9 "$(basename "$archive")" "${archive_files[@]}"
   )
   verify_zip "$archive"
 }
@@ -166,7 +179,7 @@ build_linux() {
   run_export "Linux Dedicated Server" "$executable" "$LOG_DIR/server-linux-$MODE.log"
   chmod +x "$executable"
   smoke_server_package "$package" "server-linux-$MODE"
-  package_server "$directory" "$executable" "$package" "$archive"
+  package_server "$directory" "$executable" "$package" "$archive" true
   echo "    Verified $archive"
 }
 
@@ -204,6 +217,8 @@ build_macos() {
   unzip -q "$raw_archive" -d "$package_directory"
   cp "$ROOT_DIR/server/server.cfg" "$package_directory/server.cfg"
   cp "$ROOT_DIR/server/README.md" "$package_directory/HOSTING.md"
+  cp "$ROOT_DIR/server/run-server.sh" "$package_directory/run-server.sh"
+  chmod +x "$package_directory/run-server.sh"
   cp "$ROOT_DIR/LICENSE" "$package_directory/LICENSE"
 
   if [[ "$(uname -s)" == "Darwin" ]]; then
@@ -216,7 +231,7 @@ build_macos() {
     "server-macos-$MODE"
   (
     cd "$package_directory"
-    zip -q -9 -r "$archive" LemonShooter.app server.cfg HOSTING.md LICENSE
+    zip -q -9 -r "$archive" LemonShooter.app server.cfg run-server.sh HOSTING.md LICENSE
   )
   rm -rf -- "$package_directory"
   rm -f "$raw_archive"
