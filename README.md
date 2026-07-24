@@ -9,6 +9,15 @@ repository.
 The server is built with Godot 4.7 and licensed under the GNU Affero General
 Public License v3.0. The game client remains a separate project and license.
 
+## Download v0.1.0
+
+- [Linux x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.0/LemonShooter-Server-Linux-x86_64.zip)
+- [Windows x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.0/LemonShooter-Server-Windows-x86_64.zip)
+- [macOS universal](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.0/LemonShooter-Server-macOS-Universal.zip)
+
+See the [v0.1.0 release notes](https://github.com/lkuich/LemonShooterServer/releases/tag/v0.1.0)
+for checksums, compatibility details, and the unsigned macOS build notice.
+
 ## Run a release
 
 Keep the executable, `.pck`, and `server.cfg` together. Then run:
