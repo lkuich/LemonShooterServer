@@ -7,12 +7,12 @@ a local player, HUD, voice session, or input devices.
 
 Download the current prerelease for:
 
-- [Linux x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.0/LemonShooter-Server-Linux-x86_64.zip)
-- [Windows x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.0/LemonShooter-Server-Windows-x86_64.zip)
-- [macOS universal](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.0/LemonShooter-Server-macOS-Universal.zip)
+- [Linux x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.1/LemonShooter-Server-Linux-x86_64.zip)
+- [Windows x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.1/LemonShooter-Server-Windows-x86_64.zip)
+- [macOS universal](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.1/LemonShooter-Server-macOS-Universal.zip)
 
 Release notes and asset checksums are on the
-[v0.1.0 release page](https://github.com/lkuich/LemonShooterServer/releases/tag/v0.1.0).
+[v0.1.1 release page](https://github.com/lkuich/LemonShooterServer/releases/tag/v0.1.1).
 
 ## Quick start
 
