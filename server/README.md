@@ -7,12 +7,12 @@ a local player, HUD, voice session, or input devices.
 
 Download the current prerelease for:
 
-- [Linux x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.1/LemonShooter-Server-Linux-x86_64.zip)
-- [Windows x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.1/LemonShooter-Server-Windows-x86_64.zip)
-- [macOS universal](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.1/LemonShooter-Server-macOS-Universal.zip)
+- [Linux x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.2/LemonShooter-Server-Linux-x86_64.zip)
+- [Windows x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.2/LemonShooter-Server-Windows-x86_64.zip)
+- [macOS universal](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.2/LemonShooter-Server-macOS-Universal.zip)
 
 Release notes and asset checksums are on the
-[v0.1.1 release page](https://github.com/lkuich/LemonShooterServer/releases/tag/v0.1.1).
+[v0.1.2 release page](https://github.com/lkuich/LemonShooterServer/releases/tag/v0.1.2).
 
 ## Quick start
 
@@ -74,6 +74,6 @@ panel, or PowerShell transcript tooling.
 - Content-set errors require the exact advertised pack hashes.
 - Public listing requires a valid directory URL and outbound HTTPS.
 - Do not expose a remote shell, admin port, or UDP 7001.
-- If macOS reports a prerelease as damaged, repair that extracted copy with
-  `codesign --force --deep --sign - LemonShooter.app`, then approve it using the
-  steps above. Only do this for an archive whose SHA-256 matches the release.
+- The v0.1.0 macOS archive had an invalid-signature packaging defect. Replace it
+  with v0.1.2 or newer. If a current archive reports damage, verify its SHA-256
+  against the release before bypassing any macOS warning.
