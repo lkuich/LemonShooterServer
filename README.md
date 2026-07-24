@@ -9,26 +9,28 @@ repository.
 The server is built with Godot 4.7 and licensed under the GNU Affero General
 Public License v3.0. The game client remains a separate project and license.
 
-## Download v0.1.1
+## Download v0.1.2
 
-- [Linux x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.1/LemonShooter-Server-Linux-x86_64.zip)
-- [Windows x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.1/LemonShooter-Server-Windows-x86_64.zip)
-- [macOS universal](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.1/LemonShooter-Server-macOS-Universal.zip)
+- [Linux x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.2/LemonShooter-Server-Linux-x86_64.zip)
+- [Windows x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.2/LemonShooter-Server-Windows-x86_64.zip)
+- [macOS universal](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.2/LemonShooter-Server-macOS-Universal.zip)
 
-See the [v0.1.1 release notes](https://github.com/lkuich/LemonShooterServer/releases/tag/v0.1.1)
+See the [v0.1.2 release notes](https://github.com/lkuich/LemonShooterServer/releases/tag/v0.1.2)
 for checksums, compatibility details, and the ad-hoc-signed macOS build notice.
 
 ## Run a release
 
-Keep the executable, `.pck`, and `server.cfg` together. Then run:
+Extract the Linux or macOS archive and run:
 
 ```sh
-./LemonShooterServer.x86_64 --server-config server.cfg
+./run-server.sh
 ```
 
-On Windows use `LemonShooterServer.exe`; on macOS use
-`LemonShooter.app/Contents/MacOS/LemonShooter`. Forward UDP 7000 by default.
-See [server/README.md](server/README.md) for configuration and hosting details.
+The launcher selects the correct binary, loads the adjacent `server.cfg`, and
+forwards options such as `--port 7100` or `--private`. On Windows use
+`LemonShooterServer.exe --server-config server.cfg`. Forward UDP 7000 by
+default. See [server/README.md](server/README.md) for configuration and hosting
+details.
 
 ## Build locally
 

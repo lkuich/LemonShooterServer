@@ -7,32 +7,36 @@ a local player, HUD, voice session, or input devices.
 
 Download the current prerelease for:
 
-- [Linux x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.1/LemonShooter-Server-Linux-x86_64.zip)
-- [Windows x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.1/LemonShooter-Server-Windows-x86_64.zip)
-- [macOS universal](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.1/LemonShooter-Server-macOS-Universal.zip)
+- [Linux x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.2/LemonShooter-Server-Linux-x86_64.zip)
+- [Windows x86_64](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.2/LemonShooter-Server-Windows-x86_64.zip)
+- [macOS universal](https://github.com/lkuich/LemonShooterServer/releases/download/v0.1.2/LemonShooter-Server-macOS-Universal.zip)
 
 Release notes and asset checksums are on the
-[v0.1.1 release page](https://github.com/lkuich/LemonShooterServer/releases/tag/v0.1.1).
+[v0.1.2 release page](https://github.com/lkuich/LemonShooterServer/releases/tag/v0.1.2).
 
 ## Quick start
 
-Keep the executable, `.pck`, and `server.cfg` in the same directory, then run:
+Extract the archive and run the launcher from its root:
 
 ```sh
-./LemonShooterServer.x86_64 --server-config server.cfg
+./run-server.sh
 ```
 
-On Windows:
-
-```powershell
-.\LemonShooterServer.exe --server-config server.cfg
-```
-
-On macOS:
+It selects the macOS or Linux binary, loads the adjacent `server.cfg`, and
+forwards extra arguments:
 
 ```sh
-./LemonShooter.app/Contents/MacOS/LemonShooter --server-config server.cfg
+./run-server.sh --port 7100 --private
 ```
+
+To use another configuration, pass it explicitly:
+
+```sh
+./run-server.sh --server-config /path/to/community-server.cfg
+```
+
+Windows operators should run
+`.\LemonShooterServer.exe --server-config server.cfg` from PowerShell.
 
 The macOS archive is universal and runs natively on Apple Silicon and Intel
 Macs. Prerelease builds are ad-hoc signed but not notarized, so first launch may
@@ -70,6 +74,6 @@ panel, or PowerShell transcript tooling.
 - Content-set errors require the exact advertised pack hashes.
 - Public listing requires a valid directory URL and outbound HTTPS.
 - Do not expose a remote shell, admin port, or UDP 7001.
-- If macOS reports a prerelease as damaged, repair that extracted copy with
-  `codesign --force --deep --sign - LemonShooter.app`, then approve it using the
-  steps above. Only do this for an archive whose SHA-256 matches the release.
+- The v0.1.0 macOS archive had an invalid-signature packaging defect. Replace it
+  with v0.1.2 or newer. If a current archive reports damage, verify its SHA-256
+  against the release before bypassing any macOS warning.

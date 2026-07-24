@@ -69,12 +69,11 @@ jobs:
           mkdir -p .ci/macos
           unzip -q "$archive" -d .ci/macos
           test -f .ci/macos/server.cfg
+          test -x .ci/macos/run-server.sh
           test -f .ci/macos/HOSTING.md
           codesign --verify --deep --strict --verbose=4 .ci/macos/LemonShooter.app
-          .ci/macos/LemonShooter.app/Contents/MacOS/LemonShooter \
-            --headless --quit-after 3 \
-            --server-config .ci/macos/server.cfg \
-            --private --port 17690
+          .ci/macos/run-server.sh \
+            --headless --quit-after 3 --private --port 17690
 
   release:
     name: Create draft release
