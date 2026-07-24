@@ -50,8 +50,47 @@ jobs:
             builds/server-windows/LemonShooter-Server-Windows-x86_64.zip
             builds/server-macos/LemonShooter-Server-macOS-Universal.zip
 
+  verify-macos:
+    name: Verify macOS signature and launch
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - name: Download server artifacts
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: lemonshooter-dedicated-servers
+          path: builds
+
+      - name: Verify and smoke macOS bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="builds/server-macos/LemonShooter-Server-macOS-Universal.zip"
+          mkdir -p .ci/macos
+          unzip -q "$archive" -d .ci/macos
+          test -f .ci/macos/server.cfg
+          test -f .ci/macos/HOSTING.md
+          codesign --verify --deep --strict --verbose=4 .ci/macos/LemonShooter.app
+          .ci/macos/LemonShooter.app/Contents/MacOS/LemonShooter \
+            --headless --quit-after 3 \
+            --server-config .ci/macos/server.cfg \
+            --private --port 17690
+
+  release:
+    name: Create draft release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - build
+      - verify-macos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download server artifacts
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: lemonshooter-dedicated-servers
+          path: builds
+
       - name: Create draft release
-        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v3.0.2
         with:
           draft: true

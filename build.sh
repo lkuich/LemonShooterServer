@@ -187,25 +187,39 @@ build_windows() {
 build_macos() {
   local directory="$BUILD_DIR/server-macos"
   local archive="$directory/LemonShooter-Server-macOS-Universal.zip"
+  local raw_archive="$directory/.LemonShooter-macOS-export.zip"
   local app_prefix="LemonShooter.app/Contents"
-  local smoke_directory
+  local package_directory
 
   mkdir -p "$directory"
-  rm -f "$archive"
-  run_export "macOS Dedicated Server" "$archive" "$LOG_DIR/server-macos-$MODE.log"
-  verify_zip "$archive"
-  unzip -Z1 "$archive" | grep -qx "$app_prefix/MacOS/LemonShooter" \
+  rm -f "$archive" "$raw_archive"
+  run_export "macOS Dedicated Server" "$raw_archive" "$LOG_DIR/server-macos-$MODE.log"
+  verify_zip "$raw_archive"
+  unzip -Z1 "$raw_archive" | grep -qx "$app_prefix/MacOS/LemonShooter" \
     || die "macOS archive is missing its executable."
-  unzip -Z1 "$archive" | grep -qx "$app_prefix/Resources/LemonShooter.pck" \
+  unzip -Z1 "$raw_archive" | grep -qx "$app_prefix/Resources/LemonShooter.pck" \
     || die "macOS archive is missing its data package."
-  smoke_directory="$(mktemp -d)"
-  unzip -p "$archive" "$app_prefix/Resources/LemonShooter.pck" >"$smoke_directory/LemonShooter.pck"
-  smoke_server_package "$smoke_directory/LemonShooter.pck" "server-macos-$MODE"
-  rm -rf -- "$smoke_directory"
+
+  package_directory="$(mktemp -d "$directory/package.XXXXXX")"
+  unzip -q "$raw_archive" -d "$package_directory"
+  cp "$ROOT_DIR/server/server.cfg" "$package_directory/server.cfg"
+  cp "$ROOT_DIR/server/README.md" "$package_directory/HOSTING.md"
+  cp "$ROOT_DIR/LICENSE" "$package_directory/LICENSE"
+
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    codesign --verify --deep --strict --verbose=4 "$package_directory/LemonShooter.app" \
+      || die "macOS app bundle has an invalid signature."
+  fi
+
+  smoke_server_package \
+    "$package_directory/$app_prefix/Resources/LemonShooter.pck" \
+    "server-macos-$MODE"
   (
-    cd "$ROOT_DIR"
-    zip -q -9 "$archive" server/server.cfg server/README.md LICENSE
+    cd "$package_directory"
+    zip -q -9 -r "$archive" LemonShooter.app server.cfg HOSTING.md LICENSE
   )
+  rm -rf -- "$package_directory"
+  rm -f "$raw_archive"
   verify_zip "$archive"
   echo "    Verified $archive"
 }

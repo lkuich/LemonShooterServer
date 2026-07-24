@@ -35,8 +35,10 @@ On macOS:
 ```
 
 The macOS archive is universal and runs natively on Apple Silicon and Intel
-Macs. Public downloads should be Developer ID signed and notarized; local
-unsigned builds may require explicit approval in macOS Privacy & Security.
+Macs. Prerelease builds are ad-hoc signed but not notarized, so first launch may
+require Control-clicking the app and choosing **Open**, or approving it under
+**System Settings → Privacy & Security**. Frictionless Gatekeeper approval
+requires a Developer ID signature and Apple notarization.
 
 Forward the configured gameplay port as **UDP only** (UDP 7000 by default).
 UDP 7001 is optional LAN discovery and should not be exposed to the internet.
@@ -68,3 +70,6 @@ panel, or PowerShell transcript tooling.
 - Content-set errors require the exact advertised pack hashes.
 - Public listing requires a valid directory URL and outbound HTTPS.
 - Do not expose a remote shell, admin port, or UDP 7001.
+- If macOS reports a prerelease as damaged, repair that extracted copy with
+  `codesign --force --deep --sign - LemonShooter.app`, then approve it using the
+  steps above. Only do this for an archive whose SHA-256 matches the release.

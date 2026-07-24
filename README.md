@@ -49,8 +49,9 @@ Pushing a `v*` tag runs the release workflow for Linux, Windows, and universal
 macOS, then opens a draft GitHub release with all three archives. Manual
 workflow runs build the same artifacts without publishing a release.
 
-macOS CI artifacts are unsigned. Public production releases should be signed
-with a Developer ID certificate and notarized before distribution.
+macOS CI artifacts receive a valid ad-hoc signature and are verified on a macOS
+runner. Frictionless Gatekeeper approval still requires a Developer ID
+certificate and Apple notarization.
 
 ## Contributing
 
