@@ -1,0 +1,27 @@
+; LemonShooter dedicated server
+
+config_version=5
+
+[application]
+
+config/name="LemonShooter"
+run/main_scene="res://root.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[autoload]
+
+ContentRegistry="*res://scripts/content_registry.gd"
+GameSession="*res://scripts/game_session.gd"
+NetworkSession="*res://shared/network_session.gd"
+DedicatedServer="*res://server/dedicated_server.gd"
+DirectoryClient="*res://scripts/directory_client.gd"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

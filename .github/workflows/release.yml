@@ -1,0 +1,62 @@
+name: Build dedicated servers
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7.0.1
+
+      - name: Install Godot 4.7 and export templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ci/godot "$HOME/.local/share/godot/export_templates/4.7.stable"
+          curl --fail --location --retry 3 \
+            --output .ci/godot/editor.zip \
+            https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
+          curl --fail --location --retry 3 \
+            --output .ci/godot/templates.tpz \
+            https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_export_templates.tpz
+          unzip -q .ci/godot/editor.zip -d .ci/godot
+          unzip -q .ci/godot/templates.tpz -d .ci/godot/templates
+          mv .ci/godot/templates/templates/* "$HOME/.local/share/godot/export_templates/4.7.stable/"
+          chmod +x .ci/godot/Godot_v4.7-stable_linux.x86_64
+
+      - name: Parse project
+        run: .ci/godot/Godot_v4.7-stable_linux.x86_64 --headless --path . --editor --quit
+
+      - name: Build and smoke all server targets
+        env:
+          GODOT_BIN: ${{ github.workspace }}/.ci/godot/Godot_v4.7-stable_linux.x86_64
+        run: ./build.sh
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: lemonshooter-dedicated-servers
+          if-no-files-found: error
+          path: |
+            builds/server-linux/LemonShooter-Server-Linux-x86_64.zip
+            builds/server-windows/LemonShooter-Server-Windows-x86_64.zip
+            builds/server-macos/LemonShooter-Server-macOS-Universal.zip
+
+      - name: Create draft release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v3.0.2
+        with:
+          draft: true
+          generate_release_notes: true
+          files: |
+            builds/server-linux/LemonShooter-Server-Linux-x86_64.zip
+            builds/server-windows/LemonShooter-Server-Windows-x86_64.zip
+            builds/server-macos/LemonShooter-Server-macOS-Universal.zip
